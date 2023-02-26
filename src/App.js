@@ -4,6 +4,7 @@ import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
 import { useState } from 'react';
+import AddItem from './AddItem';
 function App() {
   const [items,setItems] = useState([
     {
@@ -22,6 +23,7 @@ function App() {
       item: "Item 3"
   }
   ]);
+  const [newItems,setNewItems]=useState('');
   const handleCheck = (id) => {
     const list = items.map((item) => item.id === id ? {...item, checked: !item.checked} : item);
     setItems(list);
@@ -31,6 +33,11 @@ function App() {
     const list = items.filter((item)=>item.id!==id);
     setItems(list);
     localStorage.setItem('shoppinglist', JSON.stringify(list));
+  }
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    if(!newItems) return;
+    console.log("Submitted");
   }
   const name = "yamin";
   return (
@@ -42,6 +49,11 @@ function App() {
         </p>
       </header> */}
       <Header title='Grocery List'></Header>
+      <AddItem
+      newItems={newItems}
+      setNewItems={setNewItems}
+      handleSubmit={handleSubmit}
+      ></AddItem>
     <Content
     items={items}
     handleCheck={handleCheck}
