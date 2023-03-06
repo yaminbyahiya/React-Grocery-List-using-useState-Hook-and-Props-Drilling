@@ -24,6 +24,13 @@ function App() {
   }
   ]);
   const [newItems,setNewItems]=useState('');
+  const addItem = (item) => {
+    const id = items.length?item[item.length-1].id+1:1;
+    const newItem = {id, checked: false, item};
+    const list = [...items, newItem];
+    setItems(list);
+    localStorage.setItem('shoppinglist', JSON.stringify(list));
+  }
   const handleCheck = (id) => {
     const list = items.map((item) => item.id === id ? {...item, checked: !item.checked} : item);
     setItems(list);
