@@ -7,12 +7,29 @@ import SearchItem from './SearchItem';
 import { useState, useEffect} from 'react';
 import AddItem from './AddItem';
 function App() {
-  const [items,setItems] = useState(JSON.parse(localStorage.getItem("shoppinglist")) || []);
+  const API_URL='http://localhost:3500/items';
+  // const [items,setItems] = useState(JSON.parse(localStorage.getItem("shoppinglist")) || []);
+  const [items,setItems] = useState([]);
   const [newItems,setNewItems]=useState('');
   const [search, setSearch] = useState('');
+  const [fetchError,setFetchError] = useState(null);
+  // useEffect(()=>{
+  //   localStorage.setItem('shoppinglist', JSON.stringify(items));
+  // },[items])
   useEffect(()=>{
-    localStorage.setItem('shoppinglist', JSON.stringify(items));
-  },[items])
+    const fetchItems = async () => {
+      try {
+        if(!response.ok) throw Error("Did not receive expected data!");
+        const response = await fetch(API_URL);
+        const listitems = await response.json();
+        console.log("Hello");
+        setItems(listitems);
+      } catch (error) {
+        setFetchError(error.message);
+      }
+    }
+    fetchItems();
+  }, []);
   const addItem = (item) => {
     const id = items.length?items[items.length-1].id+1:1;
     const newItem = {id, checked: false, item};
